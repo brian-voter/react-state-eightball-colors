@@ -31,7 +31,7 @@ const DEFAULT_ANSWERS = [
  * props: answers: [{msg, color}, ...]
  * state: current answer {msg, color}
  *
- * rendered by App
+ * App > Eightball
  */
 function Eightball({ answers = DEFAULT_ANSWERS }) {
 
