@@ -34,22 +34,46 @@ const DEFAULT_ANSWERS = [
  * App > Eightball
  */
 function Eightball({ answers = DEFAULT_ANSWERS }) {
+  const defaultState = {
+    msg: "Think of a question",
+    color: "black"
+  }
 
-  const [answer, setAnswer] = useState(
-    {
-      msg: "Think of a question",
-      color: "black"
-    }
-  );
+  const [answer, setAnswer] = useState(defaultState);
+  const [greenCount, setGreenCount] = useState(0);
+  const [goldenrodCount, setGoldenrodCount] = useState(0);
+  const [redCount, setRedCount] = useState(0);
 
   /**
    * set the answer state to a random answer from the available options
+   * keep track of the color count
    */
   function chooseAnswer() {
     const randindex = getRandom(answers.length);
 
-    setAnswer(answers[randindex]);
+    const chosenAnswer = answers[randindex];
+
+    if (chosenAnswer.color === "green") {
+      setGreenCount(greenCount + 1);
+    } else if (chosenAnswer.color === "goldenrod") {
+      setGoldenrodCount(goldenrodCount + 1);
+    } else if (chosenAnswer.color === "red") {
+      setRedCount(redCount + 1);
+    }
+
+    setAnswer(chosenAnswer);
   }
+
+  /**
+   * Reset the ball and color count
+   */
+  function resetBall() {
+    setAnswer(defaultState);
+    setGreenCount(0);
+    setGoldenrodCount(0);
+    setRedCount(0);
+  }
+
 
   const style = {
     backgroundColor: answer.color,
@@ -63,8 +87,24 @@ function Eightball({ answers = DEFAULT_ANSWERS }) {
   };
 
   return (
-    <div onClick={chooseAnswer} style={style}>
-      {answer.msg}
+    <div>
+      <div onClick={chooseAnswer} style={style}>
+        {answer.msg}
+      </div>
+      <div className="container-fluid">
+        <button className="btn btn-primary" onClick={resetBall}>
+          Reset
+        </button>
+        <div>
+          Green Count: {greenCount}
+        </div>
+        <div>
+          Goldenrod Count: {goldenrodCount}
+        </div>
+        <div>
+          Red Count: {redCount}
+        </div>
+      </div>
     </div>
   );
 }
