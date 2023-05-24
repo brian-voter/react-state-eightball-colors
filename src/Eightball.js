@@ -37,12 +37,14 @@ function Eightball({ answers = DEFAULT_ANSWERS }) {
   const defaultState = {
     msg: "Think of a question",
     color: "black"
-  }
+  };
 
   const [answer, setAnswer] = useState(defaultState);
-  const [greenCount, setGreenCount] = useState(0);
-  const [goldenrodCount, setGoldenrodCount] = useState(0);
-  const [redCount, setRedCount] = useState(0);
+  // const [greenCount, setGreenCount] = useState(0);
+  // const [goldenrodCount, setGoldenrodCount] = useState(0);
+  // const [redCount, setRedCount] = useState(0);
+
+  const [colorCounts, setColorCounts] = useState({});
 
   /**
    * set the answer state to a random answer from the available options
@@ -53,13 +55,20 @@ function Eightball({ answers = DEFAULT_ANSWERS }) {
 
     const chosenAnswer = answers[randindex];
 
-    if (chosenAnswer.color === "green") {
-      setGreenCount(greenCount + 1);
-    } else if (chosenAnswer.color === "goldenrod") {
-      setGoldenrodCount(goldenrodCount + 1);
-    } else if (chosenAnswer.color === "red") {
-      setRedCount(redCount + 1);
-    }
+    const oldCount = colorCounts[chooseAnswer.color] || 0;
+
+    const newCounts = { ...colorCounts };
+    newCounts[chosenAnswer.color] = oldCount + 1;
+
+    setColorCounts(newCounts);
+
+    // if (chosenAnswer.color === "green") {
+    //   setGreenCount(greenCount + 1);
+    // } else if (chosenAnswer.color === "goldenrod") {
+    //   setGoldenrodCount(goldenrodCount + 1);
+    // } else if (chosenAnswer.color === "red") {
+    //   setRedCount(redCount + 1);
+    // }
 
     setAnswer(chosenAnswer);
   }
@@ -69,9 +78,10 @@ function Eightball({ answers = DEFAULT_ANSWERS }) {
    */
   function resetBall() {
     setAnswer(defaultState);
-    setGreenCount(0);
-    setGoldenrodCount(0);
-    setRedCount(0);
+    // setGreenCount(0);
+    // setGoldenrodCount(0);
+    // setRedCount(0);
+    setColorCounts({});
   }
 
 
@@ -95,7 +105,14 @@ function Eightball({ answers = DEFAULT_ANSWERS }) {
         <button className="btn btn-primary" onClick={resetBall}>
           Reset
         </button>
-        <div>
+        {
+          Object.entries(colorCounts).map(([color, count]) =>
+            <div>
+              {color} count: {count}
+            </div>
+          )
+        }
+        {/* <div>
           Green Count: {greenCount}
         </div>
         <div>
@@ -103,7 +120,7 @@ function Eightball({ answers = DEFAULT_ANSWERS }) {
         </div>
         <div>
           Red Count: {redCount}
-        </div>
+        </div> */}
       </div>
     </div>
   );
